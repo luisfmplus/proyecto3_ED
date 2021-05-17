@@ -1,0 +1,11 @@
+------------ TCP Client ------------
+
+WSAStartUp Success
+TCP Client Socket Creation Success
+Connection Success
+Data Sending Success
+DATA RECEIVED -> Hola desde el servidor
+Data Sending Success
+DATA RECEIVED -> Hola desde el servidor
+Data Sending Success
+DATA RECEIVED -> Hola desde el servidor
