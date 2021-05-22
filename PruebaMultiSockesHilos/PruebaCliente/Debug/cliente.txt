@@ -1,0 +1,13 @@
+------------ TCP Client ------------
+
+WSAStartUp Success
+TCP Client Socket Creation Success
+Conexion exitosa en puerto 7999
+DATA RECEIVED -> 8002
+Closing Socket Success
+CleanUp Fun Success
+WSAStartUp Success
+TCP Client Socket Creation Success
+Conexion exitosa en puerto 8002
+Data Sending Success desde puerto: 8002
+DATA RECEIVED -> Hola desde el servidor

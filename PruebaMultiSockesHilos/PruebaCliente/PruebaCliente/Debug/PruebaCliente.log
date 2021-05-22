@@ -1,0 +1,4 @@
+﻿  CppCLR_WinformsProjekt.cpp
+C:\Users\rmcor\Documents\Projectos de Visual Studio\PruebaCliente\PruebaCliente\datos.h(79,23): warning C4018: '<': no coinciden signed/unsigned
+  AssemblyInfo.obj : se encontró un módulo MSIL; vinculación incremental deshabilitada para MSIL; ejecutando vínculo completo
+  PruebaCliente.vcxproj -> C:\Users\rmcor\Documents\Projectos de Visual Studio\PruebaCliente\Debug\PruebaCliente.exe
