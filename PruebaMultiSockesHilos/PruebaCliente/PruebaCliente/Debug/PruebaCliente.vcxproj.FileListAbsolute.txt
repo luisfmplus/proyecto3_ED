@@ -1,0 +1,3 @@
+C:\Users\rmcor\Documents\Projectos de Visual Studio\PruebaCliente\PruebaCliente\Debug\PruebaCliente.vcxprojAssemblyReference.cache
+C:\Users\rmcor\Documents\Projectos de Visual Studio\PruebaCliente\PruebaCliente\Debug\PruebaCliente.Form1.resources
+C:\Users\rmcor\Documents\Projectos de Visual Studio\PruebaCliente\PruebaCliente\Debug\PruebaCliente.vcxproj.GenerateResource.cache
