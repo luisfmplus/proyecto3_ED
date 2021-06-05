@@ -8,8 +8,6 @@
    -4 = error en general
 */
 
-//falta implementar la funcion de borrarNodo()
-
 #ifndef _ARBOLAVLPISOS_H
 #define	_ARBOLAVLPISOS_H
 #include "2AVLPisosHoteles.cpp"
@@ -29,18 +27,23 @@ class NodoHotel {
        CodHotel = CH;
        CantidadEstrellas = est;
 
+       for (int i = 0; i < sizeof(Nombre); i++){
+          Nombre[i] = '\000';
+       }
+
        for (int i = 0; nom[i] != '\000' &&  i < sizeof(Nombre) ; i++){
           Nombre[i] = nom[i];
 
        }
        Izquierda = NULL;
        Derecha =NULL;
+       
     }
 
 
    private:
     int CodHotel;
-    char Nombre [30] = "\000";
+    char Nombre[30];
     int CantidadEstrellas;
     NodoHotel *Izquierda;
     NodoHotel *Derecha;
@@ -75,6 +78,7 @@ class ArbolABB_Hoteles {
     pnodohotel getNodo(int valor);
     bool getNodo(pnodohotel &recibir, int valor);
     int borrarNodo(pnodohotel nodo);
+    int borrarNodo(int valor);
 
     
    private:
@@ -86,6 +90,9 @@ class ArbolABB_Hoteles {
     int isCodHotel(int valor, pnodohotel aux);
     int insertarNodo(int CH,char* nom, int est, pnodohotel aux);
     void borrarArbol(pnodohotel node);
+    int borrarNodo(pnodohotel nodo, pnodohotel aux, bool& encontrado);
+    pnodohotel minValor(pnodohotel hijoderecha);
+    pnodohotel maxValor(pnodohotel hijoIzquierda);
 
     pnodohotel primero;
     pnodohotel ultimonodo;
@@ -343,14 +350,389 @@ pnodohotel ArbolABB_Hoteles :: getultimoNodoInsertado(){
 
 int ArbolABB_Hoteles :: borrarNodo(pnodohotel nodo){
    
-   if (nodo == NULL){
-      return -1;
+// retorna
+	// -4 = no se puede borrar; no existe
+	// 1 = se logro borrar
+
+  int i;
+  bool encontrado = false;
+  pnodohotel aux = primero;
+
+
+   //validacion de la existencia del nodo a borrar
+	if (nodo == NULL){
+      //solamente entra a quí si el "nodo" es nulo
+      //nodo existe y por lo tanto se puede borrar
+      return -4;
+   }
+   
+
+   i = borrarNodo(nodo, aux, encontrado);
+
+   //hacemos la repeticion para el caso de raiz == nodo
+   if (encontrado){
+     //la funcion borrarNodoAux cambiara el valor de encontrado solamente si ocupamos borrar a la raiz
+	  // y por lo tanto solamente entrara aquí cuando se requiera borrar la raiz
+	  i = borrarNodo(nodo, aux, encontrado);
+    }
+
+   return i;
+
+}
+int ArbolABB_Hoteles :: borrarNodo(int valor){
+   
+// retorna
+	// -4 = no se puede borrar; no existe
+	// 1 = se logro borrar
+
+  int i;
+  bool encontrado = false;
+  pnodohotel aux = primero;
+
+
+    //validacion de la existencia del nodo a borrar
+	if (isCodHotel(valor) == -3){
+		//solamente entra si el valor no existe
+		return -4;
+	}
+	
+	pnodohotel nodo = getNodo(valor);
+
+   i = borrarNodo(nodo, aux, encontrado);
+
+   //hacemos la repeticion para el caso de raiz == nodo
+   if (encontrado){
+     //la funcion borrarNodoAux cambiara el valor de encontrado solamente si ocupamos borrar a la raiz
+	  // y por lo tanto solamente entrara aquí cuando se requiera borrar la raiz
+	  i = borrarNodo(nodo, aux, encontrado);
+    }
+
+   return i;
+
+}
+int ArbolABB_Hoteles :: borrarNodo(pnodohotel nodo, pnodohotel aux, bool& encontrado){
+
+   //nodo nunca sera null
+
+   int i;
+   pnodohotel min;
+   pnodohotel max;
+   pnodohotel borrar;
+
+   if ((aux == NULL)){
+     return -1;
    }
   
-   //implementacion del borrado
-   return 1;
+   // es menor lo que busco?
+   if (aux->CodHotel > nodo->CodHotel){
+      i = borrarNodo(nodo, aux->Izquierda, encontrado);
+
+   // es mayor lo que busco
+   } else if (aux->CodHotel < nodo->CodHotel){
+      i = borrarNodo(nodo, aux->Derecha, encontrado);
+
+   } else{
+
+      //me encuentro en el nodo a borrar
+
+	  if (!encontrado){
+			//unicamente entra aquí si encontrado = false
+
+			encontrado = true;
+      
+      		//esto retornara a la llamada anterior o a la llamada principal
+      		return 1;
+	  
+	  }
+   }
+
+	if (encontrado){
+      
+    	//aux es el padre de nodo
+   
+    	if (nodo->Derecha == nodo->Izquierda){
+        	// el nodo a borrar es una hoja
+
+        	borrar = nodo;
+
+			if (nodo == primero){
+			   // trabajamos en la raiz
+
+				primero = NULL; //raiz a nulo
+				delete borrar; // borramos la raiz
+				encontrado = false; // la dejamos en falso
+        		return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+        	    //min y max son NULL, ya que el nodo a borrar es una hoja
+
+        	    delete borrar;
+        	    aux->Derecha = NULL;
+	
+        	} else {
+
+        	    delete borrar;
+        	    aux->Izquierda = NULL;
+
+        	}
+
+        	encontrado = false;
+        	return 1;
+
+    	}
+      
+    	if (nodo->Izquierda == NULL){
+        	// el nodo a borrar tiene un hijo del lado derecho y no del lado izquirdo
+
+        	borrar = nodo;
+
+			if (nodo == primero){
+				// trabajamos en la raiz
+
+				primero = nodo->Derecha; //raiz a nulo
+				delete borrar; // borramos la raiz
+				encontrado = false; // la dejamos en falso
+        		return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+
+        		aux->Derecha = nodo->Derecha;
+        	    delete borrar;
+	
+        	} else {
+
+        	    aux->Izquierda = nodo->Derecha;
+        	    delete borrar;
+
+        	}
+
+        	encontrado = false;
+        	return 1;
+	
+    	}
+      
+    	if (nodo->Derecha == NULL){
+        	// el nodo a borrar tiene un hijo del lado izquierdo y no del lado derecho
+
+        	borrar = nodo;
+
+			if (nodo == primero){
+				// trabajamos en la raiz
+
+				primero = nodo->Izquierda; //raiz a nulo
+				delete borrar; // borramos la raiz
+				encontrado = false; // la dejamos en falso
+        		return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+
+        		aux->Derecha = nodo->Izquierda;
+            	delete borrar;
+            
+         	} else {
+
+            	aux->Izquierda = nodo->Izquierda;
+            	delete borrar;
+
+        	}
+
+        	encontrado = false;
+        	return 1;
+      
+      
+    	}
+      
+    	// el nodo tiene hijos de ambos lados
+
+    	min = minValor(nodo->Derecha);
+    	max = maxValor(nodo->Izquierda);
+
+    	if (max == NULL){
+        	//significa que el hijo izquierdo es el numero mayor
+
+        	borrar = nodo;
+
+			if (nodo == primero){
+				// trabajamos en la raiz
+
+				primero = nodo->Izquierda; //raiz al mayor hijo izquierdo
+				primero->Derecha = nodo->Derecha; // actualizamos el puntero derecha
+				encontrado = false; // la dejamos en falso
+        		delete borrar; // borramos el nodo
+				return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+
+        	   aux->Derecha = nodo->Izquierda;
+				aux->Derecha->Derecha = nodo->Derecha;
+        	   delete borrar;
+	
+        	} else {
+
+        	   aux->Izquierda = nodo->Izquierda;
+				aux->Izquierda->Derecha = nodo->Derecha;
+        	   delete borrar;
+
+        	}
+
+
+    	} else if(min == NULL){
+        	//significa que el hijo derecho es el numero menor
+
+        	borrar = nodo;
+
+			if (nodo == primero){
+				// trabajamos en la raiz
+
+				primero = nodo->Derecha; //raiz al menor hijo derecho
+				primero->Izquierda = nodo->Izquierda; // actualizamos el puntero izquierda
+				encontrado = false; // la dejamos en falso
+        		delete borrar; // borramos el nodo
+				return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+
+            aux->Derecha = nodo->Derecha;
+				aux->Derecha->Izquierda = nodo->Izquierda;
+            delete borrar;
+            
+        	} else {
+
+            aux->Izquierda = nodo->Derecha;
+				aux->Izquierda->Izquierda = nodo->Izquierda;
+            delete borrar;
+
+        	}
+
+
+
+      	} else {
+         	//en ambas hijos tiene mas nodos que 1
+         	//por default se utilizara el maxValor.
+         	//cuando este se acabe, entonces el nodo a borrar no tendra hijos izquierdos y por lo tanto no entrara aqui
+
+         	borrar = nodo;
+
+			if (nodo == primero){
+				// trabajamos en la raiz
+
+				primero = max->Derecha; //raiz al mayor hijo izquierdo
+				max->Derecha = NULL; // el padre del nodo hoja le dejamos el hijo en nulo
+				primero->Derecha = nodo->Derecha;
+				primero->Izquierda = nodo->Izquierda;
+				encontrado = false; // la dejamos en falso
+        		delete borrar; // borramos el nodo
+				return 1;
+	    	}
+
+        	if (aux->Derecha == nodo){
+
+            	aux->Derecha = max->Derecha; //movemos el nodo hoja a su nueva posicion
+        	    max->Derecha = NULL; // dejamos el padre de ese nodo hoja en nulo
+				aux->Derecha->Derecha = nodo->Derecha; // le actualizamos su puntero derecha
+				aux->Derecha->Izquierda = nodo->Izquierda; // le actualizamos el puntero izquierda
+        	    delete borrar;
+	
+        	} else {
+
+        	    aux->Izquierda = max->Derecha; //movemos el nodo hoja a su nueva posicion
+        	    max->Derecha = NULL; // dejamos el padre de ese nodo hoja en nulo
+				aux->Izquierda->Derecha = nodo->Derecha; // le actualizamos su puntero derecha
+				aux->Izquierda->Izquierda = nodo->Izquierda; // le actualizamos el puntero izquierda
+        	    delete borrar;
+
+        	}
+      	}
+
+    	encontrado = false;
+    	return 1;
+      
+  	}
+   
+	return i;
 }
 
+//busca al padre del nodo remplazador
+pnodohotel ArbolABB_Hoteles ::  minValor(pnodohotel hijoderecha){ 
+   
+   //recibe la posicion del nodo a la derecha de forma inicial
+   // recibe la posicion del nodo a la izquierda de manera recursiva
+
+   //retorna el nodo padre del nodo menor;
+   //retorna null si el nodo min no existe
+   //retorna null si el nodo padre del nodo min es el nodo a eliminar
+
+   pnodohotel temp;
+
+   if (hijoderecha == NULL){
+      return NULL;
+   }
+   
+   //no vamos al ultimo nodo a la izquierda del nodo inicial
+   temp = minValor(hijoderecha->Izquierda);
+
+   //cuando llegamos al nodo nulo me devolvera la pocision del nodo anterioR al nulo
+   //osea, este es el nodo de menor valor
+   
+
+   if (temp != NULL){
+      return temp;
+      
+   }
+
+
+   //al utilizar este if; forzamos al algoritmo a devolver el padre del minimo
+   if (hijoderecha->Izquierda == NULL){
+      //esto solo sucede en el nodo de valor minimo;
+      return NULL;
+   }
+   
+   
+   return hijoderecha;
+
+
+}
+
+//busca al padre del nodo remplazador
+pnodohotel ArbolABB_Hoteles ::  maxValor(pnodohotel hijoIzquierda){
+
+   //recibe la posicion del nodo a la izquierda de forma inicial
+   // recibe la posicion del nodo a la derecha de manera recursiva
+
+   //retorna el nodo padre del nodo mayor;
+   //retorna null si el nodo max no existe
+   //retorna null si: el nodo padre del nodo max es el nodo a eliminar
+
+   pnodohotel temp;
+
+   if (hijoIzquierda == NULL){
+      return NULL;
+   }
+   
+   //no vamos al ultimo nodo a la izquierda del nodo inicial
+   temp = maxValor(hijoIzquierda->Derecha);
+
+   //cuando llegamos al nodo nulo me devolvera la pocision del nodo anterio al nulo
+   //osea, este es el nodo de mayor valor
+   if (temp != NULL){
+      return temp;
+      
+   }
+
+   //al utilizar este if; forzamos al algoritmo a devolver el padre del maximo
+   if (hijoIzquierda->Derecha == NULL){
+      //esto solo sucede en el nodo de valor maximo;
+      return NULL;
+   }
+
+   return hijoIzquierda;
+
+}
 
 int ArbolABB_Hoteles :: getCodHotel(int& variable, pnodohotel aux){
 

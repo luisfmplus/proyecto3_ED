@@ -35,8 +35,6 @@ pnodocarro PosCarro;
 
 
 
-
-
 void limpiarbuffer(char* buff, int tamano){ //limpia los arreglos de chars
 
     for (int i = 0; i < tamano; i++){
@@ -3742,10 +3740,7 @@ int main(){
                 break;
 
             case 2:
-                //alteracion_del_menu
-                // previa a alteracion: "control = 6;" (llegamos al break)
-                control = control;// menu eliminaciones
-                cout<<"\nMenu no disponible\n";
+                control = 6; // menu eliminaciones
                 break;
 
             case 3:
