@@ -1,6 +1,0 @@
-999;Costa Rica
-888;Honduras
-777;Nicaragua
-999;AAA
-888;BBB
-777;CCC
