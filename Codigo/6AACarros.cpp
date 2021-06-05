@@ -57,7 +57,16 @@ class NodoCarro {
       Padre = NULL;
     
     }
+    int getPrecioCarro(){
+      return this->PrecioCarro;
+    }
+    int getPlaca(){
+      return this->Placa;
+    }
 
+    void setEstadodelCarro(char var){
+      this->EstadodelCarro=var;
+    }
 
  private:
     int Placa;

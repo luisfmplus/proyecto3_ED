@@ -57,7 +57,16 @@ class NodoHabitacion {
        Derecha = NULL;
        Izquierda = NULL;
     }
+    int getPrecioHabitacion(){
+       return PrecioHabitacion;
+    }
+    int getCodHabitacion(){
+       return CodHabitacion;
+    }
 
+    void setEstadoHabitacion(char var){
+       this->EstadoHab=var;
+    }
     
 
    private:
@@ -115,6 +124,7 @@ class ArbolRN_Habitaciones {
     bool arbolVacio() { return primero == NULL; }
     void corregirInsercion(pnodohabitacion nodo);
     void corregirBorrado(pnodohabitacion nodo, bool direccion);
+    int getCasoColor(pnodohabitacion nodo, bool direccion);
     pnodohabitacion getNodo(int valor, pnodohabitacion aux);
     void MostrarInorde(pnodohabitacion aux);
     void Mostrar(pnodohabitacion aux);
@@ -124,7 +134,7 @@ class ArbolRN_Habitaciones {
     void rotarIzq(pnodohabitacion nodo, pnodohabitacion nododerecha);
     void rotarDer(pnodohabitacion nodo, pnodohabitacion nodoizquierda);
     void rotarIzqIzq(pnodohabitacion pnodo, pnodohabitacion pnododerecha);
-    void rotarDerDer(pnodohabitacion pnodo, pnodohabitacion pnododerecha);
+    void rotarDerDer(pnodohabitacion pnodo, pnodohabitacion pnodoizquierda);
     void borrarArbol(pnodohabitacion node);
 
     int borrarNodo(pnodohabitacion nodo, pnodohabitacion aux, bool& encontrado);
@@ -291,20 +301,396 @@ void ArbolRN_Habitaciones :: corregirInsercion(pnodohabitacion nodo){
 
 }
 
+int ArbolRN_Habitaciones :: getCasoColor(pnodohabitacion nodo, bool direccion){
+
+   //recibe el nodo padre del nodo recien eliminado
+   // siendo este "nodo"
+   // el nodo borrado siempre es negro por definicion
+   // retornara un numero int que corresponde con todos los tipos de casos existentes
+   // retornara -4 si "nodo" es nulo
+   
+   int i = 100; // retornara i si no identifico el caso color
+   bool nietoI_N;
+   bool nietoD_N;
+   bool bisnietoI_N;
+   bool bisnietoD_N;
+
+   if (nodo == NULL){
+      return -4;
+   }
+
+   if (direccion){ // la procedencia del nodo borrado es derecha
+
+      if (nodo->Color == 'R'){ //padre es rojo
+
+         if ((nodo->Izquierda->Izquierda == NULL) || (nodo->Izquierda->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+            nietoI_N = true;
+         
+         }
+
+         if ((nodo->Izquierda->Derecha == NULL) || (nodo->Izquierda->Derecha->Color == 'N') ){ //el nieto derecho negro
+            nietoD_N = true;
+         }
+
+
+         if (nietoD_N && nietoI_N ){
+            // tenemos: PR, HN, nieDN y nieIN
+            //por lo tanto tenemos caso1
+            return 1;
+         }
+
+         if (!nietoI_N){ // es el nieto izquierdo rojo?
+            // tenemos: PR, HN, nieDN/R y nieIR
+            // por lo tanto tenemos caso 2
+            return 2;
+         }
+
+         if (!nietoD_N){ // es el nieto derecho rojo?
+            // tenemos: PR, HN, nieDR y nieIN/R
+            // por lo tanto tenemos caso 5
+            return 5;
+         }
+         
+         
+      }
+
+      // el nodo padre es negro
+
+      if (nodo->Izquierda->Color == 'R'){ // el hermano es rojo
+         
+      
+         if ((nodo->Izquierda->Izquierda == NULL) || (nodo->Izquierda->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+            nietoI_N = true;
+         
+         }
+
+         if ((nodo->Izquierda->Derecha == NULL) || (nodo->Izquierda->Derecha->Color == 'N') ){ //el nieto derecho negro
+            nietoD_N = true;
+         }
+      
+      
+         if ((nodo->Izquierda->Derecha->Derecha == NULL) || (nodo->Izquierda->Derecha->Derecha->Color == 'N')){
+            bisnietoD_N = true;
+         }
+
+         if ((nodo->Izquierda->Derecha->Izquierda == NULL) || (nodo->Izquierda->Derecha->Izquierda->Color == 'N')){
+            bisnietoD_N = true;
+         }
+         
+         if (bisnietoD_N && bisnietoI_N){
+            // tenemos: PN, HR, nieIN, nieDN, bisnieIN y bisnieDN
+            // por lo tanto nenemos caso 3
+            return 3;
+         }
+         
+
+         if (!bisnietoI_N){ // es el bisnieto izquierdo rojo
+            // tenemos: PN, HR, nieIN, nieDN, bisnieIR y bisnieDR/N
+            // por lo tanto tenemos caso 4
+            return 4;
+
+         }
+         
+      }
+
+      // el hermano es negro y el padre tambien es negro
+
+      if ((nodo->Izquierda->Izquierda == NULL) || (nodo->Izquierda->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+         nietoI_N = true;
+      
+      }
+
+      if ((nodo->Izquierda->Derecha == NULL) || (nodo->Izquierda->Derecha->Color == 'N') ){ //el nieto derecho negro
+         nietoD_N = true;
+      }
+
+
+      if (!nietoI_N){
+         // tenemos: PN, HN, nieIR y nieDN/R
+         // por lo tanto caso 7
+         return 7;
+      }
+
+      if (!nietoD_N){
+         // tenemos: PN, HN, nieDR y nieIN/R
+         // por lo tanto caso 5
+         return 5;
+      }
+      
+      if (nietoD_N && nietoI_N){
+         // tenemos: PN, HN, nieDN y nieIN
+         // por lo tanto caso 6
+
+         return 6;
+      }
+      
+
+      return i;
+      
+   }
+
+      if (nodo->Color == 'R'){ //padre es rojo
+
+         if ((nodo->Derecha->Izquierda == NULL) || (nodo->Derecha->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+            nietoI_N = true;
+         
+         }
+
+         if ((nodo->Derecha->Derecha == NULL) || (nodo->Derecha->Derecha->Color == 'N') ){ //el nieto derecho negro
+            nietoD_N = true;
+         }
+
+
+         if (nietoD_N && nietoI_N ){
+            // tenemos: PR, HN, nieDN y nieIN
+            //por lo tanto tenemos caso1
+            return 1;
+         }
+
+         if (!nietoD_N){ // es el nieto derecho rojo?
+            // tenemos: PR, HN, nieDR y nieIN/R
+            // por lo tanto tenemos caso 2
+            return 2;
+         }
+
+         if (!nietoI_N){ // es el nieto izquierdo rojo?
+            // tenemos: PR, HN, nieDN/R y nieIR
+            // por lo tanto tenemos caso 5
+            return 5;
+         }
+         
+      }
+
+      // el nodo padre es negro
+
+      if (nodo->Derecha->Color == 'R'){ // el hermano es rojo
+         
+      
+         if ((nodo->Derecha->Izquierda == NULL) || (nodo->Derecha->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+            nietoI_N = true;
+         
+         }
+
+         if ((nodo->Derecha->Derecha == NULL) || (nodo->Derecha->Derecha->Color == 'N') ){ //el nieto derecho negro
+            nietoD_N = true;
+         }
+      
+      
+         if ((nodo->Derecha->Izquierda->Derecha == NULL) || (nodo->Derecha->Izquierda->Derecha->Color == 'N')){
+            bisnietoD_N = true;
+         }
+
+         if ((nodo->Derecha->Izquierda->Izquierda == NULL) || (nodo->Derecha->Izquierda->Izquierda->Color == 'N')){
+            bisnietoD_N = true;
+         }
+         
+         if (bisnietoD_N && bisnietoI_N){
+            // tenemos: PN, HR, nieIN, nieDN, bisnieIN y bisnieDN
+            // por lo tanto nenemos caso 3
+            return 3;
+         }
+         
+
+         if (!bisnietoD_N){ // es el bisnieto derecho rojo
+            // tenemos: PN, HR, nieIN, nieDN, bisnieIN/R y bisnieDR
+            // por lo tanto tenemos caso 4
+            return 4;
+
+         }
+         
+      }
+
+      // el hermano es negro y el padre tambien es negro
+
+      if ((nodo->Izquierda->Izquierda == NULL) || (nodo->Izquierda->Izquierda->Color == 'N') ){ // el nieto izquierdo negro
+         nietoI_N = true;
+      
+      }
+
+      if ((nodo->Izquierda->Derecha == NULL) || (nodo->Izquierda->Derecha->Color == 'N') ){ //el nieto derecho negro
+         nietoD_N = true;
+      }
+
+
+      if (!nietoD_N){
+         // tenemos: PN, HN, nieDR y nieIN/R
+         // por lo tanto caso 7
+         return 7;
+      }
+
+      if (!nietoI_N){
+         // tenemos: PN, HN, nieIR y nieDN/R
+         // por lo tanto caso 7
+         return 5;
+      }
+
+      if (nietoD_N && nietoI_N){
+         // tenemos: PN, HN, nieDN y nieIN
+         // por lo tanto caso 6
+
+         return 6;
+      }
+      
+
+      return i;
+
+} 
+
 void ArbolRN_Habitaciones :: corregirBorrado(pnodohabitacion nodo, bool direccion){
 
+   //recibe el nodo padre del nodo borrado y la direccion de procedencia
+   // direccion = true == derecha 
 
 
+   bool ya_arreglado = false;
+   char col;
+   int numero_caso;
+   pnodohabitacion temp = NULL;
+   pnodohabitacion hermano_D;
+   pnodohabitacion hermano_I;
 
+   while (nodo != NULL){
+      
+      if (temp != NULL){
+         //cambiamos el valor de direccion
+    
+         if (nodo->Derecha == temp){
+         direccion = true;
 
+         } else {
+           direccion = false;
 
+         }
+      }
 
+      numero_caso = getCasoColor(nodo, direccion);
 
+      if (direccion){
 
+         hermano_I = nodo->Izquierda;
 
+         switch (numero_caso){
 
+            case 1: // intercambiamos colores de Padre y Hermano
+               col = nodo->Color;
+               nodo->Color = hermano_I->Color;
+               hermano_I->Color = col;
+               ya_arreglado = true;
+               break;
 
+            case 2:
+               hermano_I->Color = 'R';
+               nodo->Color = 'N';
+               hermano_I->Izquierda->Color = 'N';
+               rotarDer(nodo,hermano_I);
+               ya_arreglado = true;
+               break;
 
+            case 3:
+               hermano_I->Derecha->Color = 'R';
+               hermano_I->Color = 'N';
+               rotarDer(nodo, hermano_I);
+               ya_arreglado = true;
+               break;
+
+            case 4:
+               hermano_I->Derecha->Izquierda->Color = 'N';
+               rotarDerDer(nodo, hermano_I);
+               ya_arreglado = true;
+               break;
+
+            case 5:
+               hermano_I->Derecha->Color = 'N';
+               nodo->Color = 'N';
+               rotarDerDer(nodo, hermano_I);
+               ya_arreglado = true;
+               break;
+
+            case 6:
+               hermano_I->Color = 'R';
+               // le pasamos el problema al nodo abuelo
+
+               break;
+
+            case 7:
+               hermano_I->Izquierda->Color = 'N';
+               rotarDer(nodo, hermano_I);
+               ya_arreglado = true;
+               break;
+
+            default:
+
+               getchar();
+               break;
+         }
+
+      } else {
+
+         hermano_D = nodo->Derecha;
+
+         switch (numero_caso){
+
+            case 1: // intercambiamos colores de Padre y Hermano
+               col = nodo->Color;
+               nodo->Color = hermano_D->Color;
+               hermano_D->Color = col;
+               ya_arreglado = true;
+               break;
+
+            case 2:
+               hermano_D->Color = 'R';
+               nodo->Color = 'N';
+               hermano_D->Derecha->Color = 'N';
+               rotarIzq(nodo,hermano_D);
+               ya_arreglado = true;
+               break;
+
+            case 3:
+               hermano_D->Izquierda->Color = 'R';
+               hermano_D->Color = 'N';
+               rotarIzq(nodo, hermano_D);
+               ya_arreglado = true;
+               break;
+
+            case 4:
+               hermano_D->Izquierda->Derecha->Color = 'N';
+               rotarIzqIzq(nodo,hermano_D);
+               ya_arreglado = true;
+               break;
+
+            case 5:
+               hermano_D->Izquierda->Color = 'N';
+               nodo->Color = 'N';
+               rotarIzqIzq(nodo, hermano_D);
+               ya_arreglado = true;
+               break;
+
+            case 6:
+               hermano_D->Color = 'R';
+
+               break;
+
+            case 7:
+               hermano_D->Derecha->Color = 'N';
+               rotarIzq(nodo, hermano_D);
+               ya_arreglado = true;
+               break;
+
+            default:
+
+               getchar();
+               break;
+         }
+
+      }
+      
+      if (ya_arreglado){
+         break;
+      }
+      temp = nodo;
+      nodo = nodo->Padre;
+   }
+   
 
 }
 
@@ -488,7 +874,7 @@ void ArbolRN_Habitaciones :: rotarIzqIzq(pnodohabitacion pnodo, pnodohabitacion 
    pnodo->Padre->Izquierda = pnodo;
 
 }
-void ArbolRN_Habitaciones :: rotarDerDer(pnodohabitacion pnodo, pnodohabitacion pnododerecha){
+void ArbolRN_Habitaciones :: rotarDerDer(pnodohabitacion pnodo, pnodohabitacion pnodoizquierda){
 
    //rotacion doble derecha.
    //esta rotacion esta implementada de forma directa,
@@ -496,28 +882,28 @@ void ArbolRN_Habitaciones :: rotarDerDer(pnodohabitacion pnodo, pnodohabitacion 
    //,sino, una sola rotacion doble derecha
 
    //pnodo es el abuelo
-   //pnododerecha es el padre 
+   //pnodoizquierda es el padre 
 
-    pnodo->Derecha = pnododerecha->Izquierda->Izquierda;//regalamos nodo izquierdo del hijo
+    pnodo->Derecha = pnodoizquierda->Izquierda->Izquierda;//regalamos nodo izquierdo del hijo
 
     if (pnodo->Derecha != NULL){
         pnodo->Derecha->Padre = pnodo;
     }
 
-    pnododerecha->Izquierda->Izquierda = pnodo; //hijo apunta al abuelo
+    pnodoizquierda->Izquierda->Izquierda = pnodo; //hijo apunta al abuelo
 
-    pnodo= pnododerecha->Izquierda; //reutilizamo variable
+    pnodo= pnodoizquierda->Izquierda; //reutilizamo variable
 
-    pnododerecha->Izquierda = pnodo->Derecha; //regalamos nodo derecha del hijo
+    pnodoizquierda->Izquierda = pnodo->Derecha; //regalamos nodo derecha del hijo
 
-    if (pnododerecha->Izquierda != NULL){
-        pnododerecha->Izquierda->Padre = pnododerecha;
+    if (pnodoizquierda->Izquierda != NULL){
+        pnodoizquierda->Izquierda->Padre = pnodoizquierda;
     }
 
 
-    pnodo->Derecha = pnododerecha;
+    pnodo->Derecha = pnodoizquierda;
 
-    pnododerecha->Padre = pnodo;
+    pnodoizquierda->Padre = pnodo;
     pnodo->Padre = pnodo->Izquierda->Padre;
     pnodo->Izquierda->Padre = pnodo;
 
@@ -924,6 +1310,21 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
       }
       
 
+      // borramos un nodo hoja negro
+
+      if (aux->Derecha == nodo){
+         //min y max son NULL, ya que el nodo a borrar es una hoja
+
+         delete borrar;
+         aux->Derecha = NULL;
+         direccion = true;
+
+      } else {
+
+      	delete borrar;
+      	aux->Izquierda = NULL;
+         direccion = false;
+      }
       
       encontrado = false;
       corregirBorrado(aux, direccion);
@@ -949,6 +1350,7 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
 	   }
 
       if (nodo->Color == 'R'){
+         // esta situacion es imposible
          if (aux->Derecha == nodo){
 
             aux->Derecha = nodo->Derecha;//no requiere actualizar puntero izquierdo, ya que por definicion el nodo->Izquierda == NULL
@@ -970,10 +1372,26 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
 
       }
       
+      // por lo tanto el nodo es negro. eso implica que su hijo es rojo y por lo tanto no es necesario llamar a correccion
 
-      
+      if (aux->Derecha == nodo){
 
-      corregirBorrado(aux, direccion);
+         aux->Derecha = nodo->Derecha;//no requiere actualizar puntero izquierdo, ya que por definicion el nodo->Izquierda == NULL
+         aux->Derecha->Padre = aux;
+         aux->Derecha->Color = nodo->Color; // esto siempre sera negro
+         direccion = true;
+         delete borrar;
+	
+      } else {
+
+         aux->Izquierda = nodo->Derecha;//no requiere actualizar puntero izquierdo, ya que por definicion el nodo->Izquierda == NULL
+         aux->Izquierda->Padre = aux;
+         aux->Izquierda->Color = nodo->Color;// esto siempre sera negro
+         direccion = false;
+         delete borrar;
+
+      }
+
       encontrado = false;
       return 1;
 	
@@ -984,35 +1402,61 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
 
       borrar = nodo;
 
-		  if (nodo == primero){
-				// trabajamos en la raiz
-            // solamente ocurre cuando existen solamente 2 nodos
+		if (nodo == primero){
+			// trabajamos en la raiz
+         // solamente ocurre cuando existen solamente 2 nodos
 
-				primero = nodo->Izquierda; //raiz a nulo
-            primero->Padre = nodo->Padre;
-            primero->Color = 'N';
-				delete borrar; // borramos la raiz
-				encontrado = false; // la dejamos en falso
-            return 1;
-	      }
+			primero = nodo->Izquierda; //raiz a nulo
+         primero->Padre = nodo->Padre;
+         primero->Color = 'N';
+			delete borrar; // borramos la raiz
+			encontrado = false; // la dejamos en falso
+         return 1;
+	   }
+
+      if (nodo->Color == 'R'){
+         // esta situacion es imposible
+
+         if (aux->Derecha == nodo){
+         
+           aux->Derecha = nodo->Izquierda;
+           aux->Derecha->Padre = aux;
+           direccion = true;
+           delete borrar;
+
+         } else {
+
+           aux->Izquierda = nodo->Izquierda;
+           aux->Izquierda->Padre = aux;
+           direccion = false;
+           delete borrar;
+
+         }
+         encontrado = false;
+         return 1;
+
+      }
+
+      // por lo tanto el nodo es negro. eso implica que su hijo es rojo y por lo tanto no es necesario llamar a correccion
 
       if (aux->Derecha == nodo){
-        
+      
         aux->Derecha = nodo->Izquierda;
         aux->Derecha->Padre = aux;
+        aux->Derecha->Color = nodo->Color; // esto siempre sera negro
         direccion = true;
         delete borrar;
-            
+
       } else {
-          
+
         aux->Izquierda = nodo->Izquierda;
         aux->Izquierda->Padre = aux;
+        aux->Izquierda->Color = nodo->Color; // esto siempre sera negro
         direccion = false;
         delete borrar;
 
       }
 
-      corregirBorrado(aux, direccion);
       encontrado = false;
       return 1;
       
@@ -1059,7 +1503,7 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
          }
 
          // el nodo es color negro y puede tiene 0 o 1 hijos
-         // de tener un hijo este es siempre el izquierdo y siempre sera rojo
+         // de tener un hijo este es siempre es el izquierdo y siempre sera rojo
 
          if (nodo->Izquierda != NULL){
             
@@ -1072,7 +1516,7 @@ int ArbolRN_Habitaciones :: borrarNodo(pnodohabitacion nodo, pnodohabitacion aux
          }
 
          // el nodo a borrar es negro y no tiene hijos
-         // por lo tanto deberemos aplicar la correccion del arbol
+         // por lo tanto deberemos aplicar la correccion de borrado de hojas negras
 
 
         max->Izquierda = NULL;

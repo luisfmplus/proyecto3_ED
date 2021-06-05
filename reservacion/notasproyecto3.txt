@@ -3,11 +3,17 @@
 Cambios:
 se agrego set y gets del nodo
 lineas:60 a 69
+___________
+Luis: ya unifique los archivos: "reservaciones\1RNHabitaciones.cpp" con "Codigo\1RNHabitaciones.cpp"
+___________
 
 6AACarros.cpp
 Cambios:
 se agrego set y gets del nodo
 lineas:60 a 69
+___________
+Luis: ya unifique los archivos: "reservaciones\6AACarros.cpp" con "Codigo\6AACarros.cpp"
+___________
 
 10LDCReservaciones.cpp
 Cambios: sustituir el archivo
