@@ -1,0 +1,29 @@
+1RNHabitaciones.cpp
+
+Cambios:
+se agrego set y gets del nodo
+lineas:60 a 69
+
+6AACarros.cpp
+Cambios:
+se agrego set y gets del nodo
+lineas:60 a 69
+
+10LDCReservaciones.cpp
+Cambios: sustituir el archivo
+
+Proyecto3.cpp
+Cambios:
+en linea 16 se agrega la libreria #include <string>
+se comenta en la linea 235,366,3187, 3571 para no agregar reservaciones in datos completos
+linea 605 y 606 cases para las nuevas opciones de reservacion
+linea 711 a 742 agrega nuevas funciones y en 742 en inserta_Nodo se agrega el parametro string pasaporte
+linea 1117 se agrega el parametro pasaporte Reservac->InsertarInicio(entradaInt1,entradaInt2,entradaInt3,entradaInt4, habitacion,pasaporte);
+linea 1262 se agrega el parametro pasaporte Reservac->InsertarInicio(entradaInt1,entradaInt2,entradaInt3,entradaInt4, carro,pasaporte);
+se cambia los 2 inserta_Nodo de Todo incluido y se cambia en la linea 1252 por Reservac->InsertarInicio(entradaInt1,entradaInt2,entradaInt3,entradaInt4, carro, habitacion,pasaporte);
+linea 3611 se agrega la variable pasaporte
+linea 3815,3819, 3823 se agrega el parametro de pasaporte
+linea 4072 se hace pasaporte=entradaS;
+linea 4158 a 4163 se agregan 2 case mas 
+linea 4184,4220,4226,4231 se cambia el insertar con el parametro de pasaporte
+
