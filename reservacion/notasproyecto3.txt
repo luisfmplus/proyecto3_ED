@@ -24,6 +24,6 @@ se cambia los 2 inserta_Nodo de Todo incluido y se cambia en la linea 1252 por R
 linea 3611 se agrega la variable pasaporte
 linea 3815,3819, 3823 se agrega el parametro de pasaporte
 linea 4072 se hace pasaporte=entradaS;
-linea 4158 a 4163 se agregan 2 case mas 
+linea 4158 a 4163 se agregan 2 case mas y llamada a las funciones nuevas
 linea 4184,4220,4226,4231 se cambia el insertar con el parametro de pasaporte
 
