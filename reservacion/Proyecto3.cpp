@@ -706,6 +706,8 @@ bool verificarEntrada(char* entrada, int& numero){
   return true; //si
 
 }
+
+//Funcion nueva
 void cancelarReservacion(LDCReservaciones* reserva, string pasaporte){
     reserva->reservasPendientes(pasaporte);
     string opcionReserva;
@@ -720,6 +722,7 @@ void cancelarReservacion(LDCReservaciones* reserva, string pasaporte){
     reserva->cancelarReservacion(opcionReserva);
 }
 
+//Funcion nueva
 void cambiosReservacion(LDCReservaciones* reserva, string pasaporte){
     reserva->reservasPendientes(pasaporte);
     string opcionReserva;
@@ -1206,7 +1209,6 @@ void insertar_Nodo(bool AH, int numero, pnodohotel& ultimoHotel, pnodopisohotel&
             break;
 
         case 6: // Reservacion todo incluido
-
             cout <<"\nDigite un codigo(numerico) para el Pais: ";
             cin >> entradaChar1;
             entradaChar1[(sizeof(entradaChar1)-1)] = '\000';
@@ -1345,6 +1347,8 @@ void insertar_Nodo(bool AH, int numero, pnodohotel& ultimoHotel, pnodopisohotel&
                 hotel->piso->getNumPiso(entradaInt3, piso);
                 piso->habitacion->getCodHabitacion(entradaInt4, habitacion);
 
+                /*Funcion nueva
+                se cambia de 2 inserciones a una sola*/
                 Reservac->InsertarInicio(entradaInt1,entradaInt2,entradaInt3,entradaInt4, carro, habitacion,pasaporte);
                 
                 cout<< "\nReservacion exitosa\n";
@@ -4149,7 +4153,8 @@ int main(){
             case 8:
                 control = 13;// hacer una reservacion
                 break;
-            
+            /*Funcion Nueva*/
+            //case para pagar la reservacion y cancelar la eservacion
             case 9:
                 cambiosReservacion(Reservac, pasaporte);
                 break;
