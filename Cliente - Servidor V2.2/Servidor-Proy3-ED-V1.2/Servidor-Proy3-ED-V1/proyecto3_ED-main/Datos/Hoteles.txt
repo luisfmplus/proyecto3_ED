@@ -1,0 +1,42 @@
+999;1234;Tia Pancha;3
+999;56789;Rancho Redondo;4
+999;98753;Nuevo Horizonte;5
+999;1234;Temporales;3
+999;1001;Spirit;1
+999;1002;Hope;2
+999;1003;Hamilton;3
+999;1004;Megazord;4
+999;1005;Hakai;5
+999;1006;Menta;1
+999;1007;Nueva Republica;2
+999;1008;Imperio;3
+999;1009;Honestly;4
+999;1010;Japan;5
+888;1011;US America;1
+888;1012;Hellblazer;2
+888;1013;Omega;3
+888;1014;Super Star;4
+888;1015;Kamen;5
+888;1016;Ramen;1
+888;1017;Mini Star;2
+888;1018;Rapid Dash;3
+888;1019;Fire Emblematic;4
+888;1020;Water Emblematic;5
+777;1021;Wind Emblematic;1
+777;1022;Ground Emblematic;2
+777;1023;Neo Emblematic;3
+777;1024;Omega Saphiro;4
+777;1025;Alpha Ruby;5
+777;1026;Saint Josepht;1
+777;1027;Saint Kaido;2
+777;1028;Ultra Hotel;3
+777;1029;Nueva Vista;4
+777;1030;Vistoria;5
+999;1010;AAA BBB;5
+888;1011;AAA BBB;1
+888;1012;AAA BBB;2
+888;1013;AAA BBB;3
+777;1024;BBB AAA;4
+777;1025;BBB AAA;5
+777;1026;BBB AAA;1
+777;1027;BBB AAA;2

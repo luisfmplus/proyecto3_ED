@@ -1,0 +1,7 @@
+Codigo Reserva: RH1
+Pasaporte: 78459632
+Codigo Pais: 777
+Codigo Hotel: 1021
+Codigo Piso: 1021
+Codigo Habitacion: 21
+Total a pagar: 300
