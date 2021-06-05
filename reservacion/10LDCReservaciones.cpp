@@ -283,7 +283,10 @@ void LDCReservaciones::eliminaciones(int identificacion, int variable){
       if(borrar==NULL){
         break;
       }
-      BorrarPosicion(borrar);
+      int resultado=BorrarPosicion(borrar);
+      if (resultado==1){
+        continue;
+      }
       if(aux==primero){
         break;
       }
@@ -297,7 +300,10 @@ void LDCReservaciones::eliminaciones(int identificacion, int variable){
       if(borrar==NULL){
         break;
       }
-      BorrarPosicion(borrar);
+      int resultado=BorrarPosicion(borrar);
+      if (resultado==1){
+        continue;
+      }
       if(aux==primero){
         break;
       }
@@ -311,7 +317,10 @@ void LDCReservaciones::eliminaciones(int identificacion, int variable){
       if(borrar==NULL){
         break;
       }
-      BorrarPosicion(borrar);
+      int resultado=BorrarPosicion(borrar);
+      if (resultado==1){
+        continue;
+      }
       if(aux==primero){
         break;
       }
@@ -325,7 +334,10 @@ void LDCReservaciones::eliminaciones(int identificacion, int variable){
       if(borrar==NULL){
         break;
       }
-      BorrarPosicion(borrar);
+      int resultado=BorrarPosicion(borrar);
+      if (resultado==1){
+        continue;
+      }
       if(aux==primero){
         break;
       }
@@ -340,6 +352,10 @@ void LDCReservaciones::eliminaciones(int identificacion, int variable){
         break;
       }
       BorrarPosicion(borrar);
+      int resultado=BorrarPosicion(borrar);
+      if (resultado==1){
+        continue;
+      }
       if(aux==primero){
         break;
       }
@@ -905,7 +921,7 @@ pnodoldCReservaciones LDCReservaciones::retornarpunteroFP(int codigo, int opcion
         return aux;
       }
     }else{//pisos
-      if(aux->Codigo_FP==codigo){
+      if(aux->Codigo_FP==codigo && aux->HabRes!=NULL){
         return aux;
       }
     }
@@ -925,7 +941,7 @@ pnodoldCReservaciones LDCReservaciones::retornarpunteroAH(int codigo, int opcion
         return aux;
       }
     }else{//agencia
-      if(aux->Codigo_AH==codigo){
+      if(aux->Codigo_AH==codigo&& aux->CarRes!=NULL){
         return aux;
       }
     }
@@ -1232,7 +1248,7 @@ void LDCReservaciones::reservasPendientes(string pasaporte){
 
 void LDCReservaciones::generarFactura(string codigoReserva){
 	ofstream factura;
-	factura.open("Reservaciones/"+codigoReserva+".txt");
+	factura.open(/*"Reservaciones/"+*/codigoReserva+".txt");
 	pnodoldCReservaciones aux=primero;
 	while(aux!=NULL){
 		if(aux->codigoReserva==codigoReserva&&aux->HabRes==NULL){
