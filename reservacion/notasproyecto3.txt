@@ -34,7 +34,7 @@ linea 4158 a 4163 se agregan 2 case mas y llamada a las funciones nuevas
 linea 4184,4220,4226,4231 se cambia el insertar con el parametro de pasaporte
 
 Eliminaciones en los arboles para quitarlas de la lista en caso que exista dato relacionado=>se llama Reservac->eliminaciones(int identificacion, int variable)
-Poner el metodo antes de la funcion encargada de eliminar el nodo. 
+Poner el metodo antes de la funcion encargada de eliminar el nodo en los arboles. 
 identificacion es el dato para ubicar el nodo y eliminarlo(en caso de carro=placa, tipoFlotilla=codigoTipoFlotilla y demás datos)
 variable segun la eliminacion de los arboles:
 0-Carro
