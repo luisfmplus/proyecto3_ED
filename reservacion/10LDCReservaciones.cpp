@@ -1232,7 +1232,7 @@ void LDCReservaciones::reservasPendientes(string pasaporte){
 
 void LDCReservaciones::generarFactura(string codigoReserva){
 	ofstream factura;
-	factura.open(/*"Reservaciones/"+*/codigoReserva+".txt");
+	factura.open("Reservaciones/"+codigoReserva+".txt");
 	pnodoldCReservaciones aux=primero;
 	while(aux!=NULL){
 		if(aux->codigoReserva==codigoReserva&&aux->HabRes==NULL){
